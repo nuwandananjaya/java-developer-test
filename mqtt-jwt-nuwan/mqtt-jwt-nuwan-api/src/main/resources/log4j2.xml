@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" monitorInterval="30" >
+    <Properties>
+        <Property name="LOG_PATTERN">
+            %d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${hostName} --- [%15.15t] %-40.40c{1.} : %m%n%ex
+        </Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="ConsoleAppender" target="SYSTEM_OUT" follow="true">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </Console>
+        
+        <RollingFile name="FILE_DEBUG">
+	      <FileName>C:/log/server_log_debug.log</FileName>
+	      <FilePattern>C:/log/time-based-logs/%d{yyyy-MM-dd-hh-mm}_debug.log.zip</FilePattern>
+	      <LevelRangeFilter minLevel="DEBUG" maxLevel="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
+	      <PatternLayout>
+	        <Pattern>%d{yyyy-MMM-dd HH:mm:ss a} [%t] %-5level %logger{36} - %msg%n</Pattern>
+	      </PatternLayout>
+	      <Policies>
+	        <TimeBasedTriggeringPolicy interval="2" modulate="true" />
+	      </Policies>
+	      <DefaultRolloverStrategy max="5" />
+	    </RollingFile>
+        
+        <RollingFile name="FILE_ERROR">
+	      <FileName>C:/log/server_log_error.log</FileName>
+	      <FilePattern>C:/log/time-based-logs/%d{yyyy-MM-dd-hh-mm}_error.log.zip</FilePattern>
+	      <LevelRangeFilter minLevel="ERROR" maxLevel="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+	      <PatternLayout>
+	        <Pattern>%d{yyyy-MMM-dd HH:mm:ss a} [%t] %-5level %logger{36} - %msg%n</Pattern>
+	      </PatternLayout>
+	      <Policies>
+	        <TimeBasedTriggeringPolicy interval="2" modulate="true" />
+	      </Policies>
+	      <DefaultRolloverStrategy max="5" />
+	    </RollingFile>
+        
+	    <RollingFile name="FileAppender">
+	      <FileName>C:/log/server_log.log</FileName>
+	      <FilePattern>C:/log/time-based-logs/%d{yyyy-MM-dd-hh-mm}.log.zip</FilePattern>
+	      <PatternLayout>
+	        <Pattern>%d{yyyy-MMM-dd HH:mm:ss a} [%t] %-5level %logger{36} - %msg%n</Pattern>
+	      </PatternLayout>
+	      <Policies>
+	        <TimeBasedTriggeringPolicy interval="2" modulate="true" />
+	      </Policies>
+	      <DefaultRolloverStrategy max="5" />
+	    </RollingFile>
+	    
+    </Appenders>
+    
+
+    <Loggers>
+    	<Logger name="com.vq.jwt.nuwan.api" level="debug">
+            <appender-ref ref="FILE_ERROR" level="error" />
+            <appender-ref ref="FILE_DEBUG" level="debug"/>
+        </Logger>
+
+        <Root level="info">
+            <AppenderRef ref="ConsoleAppender" />
+            <AppenderRef ref="FileAppender" />
+        </Root>
+    </Loggers>
+</Configuration>
